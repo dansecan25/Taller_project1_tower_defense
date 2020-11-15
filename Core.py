@@ -42,7 +42,11 @@ mixer.music.play(loops=-1)
 
 def INICIO():
     global coins
-    coins='0000'
+    coins=100
+    global price
+    price=0
+    global item
+    item=''
     mixer.music.unload()
     root.withdraw()
     g_root=Toplevel()
@@ -55,11 +59,36 @@ def INICIO():
 
     GBG=LoadImg('tablero.png')
     G_root.fondo=GBG
-    G_root.create_image(10, 7, anchor=NW, image=GBG)
+    G_root.create_image(10, 7, anchor=NW, image=GBG, tags='fondo')
 
     name=str(Name.get())
     playerName=Label(G_root, text="Jugador: "+name, font=('Arial', 14))
     playerName.place(x=70, y=40)
+
+###Rooks a seleccionar
+    sand=LoadImg('sand_rook.png')
+    G_root.snd=sand
+    RookS=G_root.create_image(1020, 50, anchor=NW, image=sand, tags='ROOKS')
+    G_root.create_text(1060, 163,  font=('Arial', 8), fill='black', text='Sand Rook=$50',)
+
+    rock=LoadImg('rock_rook.png')
+    G_root.rck=rock
+    RookR=G_root.create_image(1120, 60, anchor=NW, image=rock, tags='ROOKR')
+    G_root.create_text(1150, 163,  font=('Arial', 8), fill='black', text='Rock Rook=$100',)
+
+    fire=LoadImg('fire_rook.png')
+    G_root.fre=fire
+    RookF=G_root.create_image(1020, 180, anchor=NW, image=fire, tags='ROOKF')
+    G_root.create_text(1060, 290,  font=('Arial', 8), fill='black', text='Fire Rook=$150',)
+
+    water=LoadImg('water_rook.png')
+    G_root.wtr=water
+    RookW=G_root.create_image(1120, 180, anchor=NW, image=water, tags='ROOKW')
+    G_root.create_text(1150, 290,  font=('Arial', 8), fill='black', text='Water Rook=$150',)
+
+    
+
+    
 
 
 
@@ -151,15 +180,97 @@ def INICIO():
 
 
 
+    def select(event):
+        global price
+        global item
+        x=event.x
+        y=event.y
+        print(str(y))
+        print(str(x))
+        if x>1000:
+            if x>=1020 and x<=1110:
+                if y>=50 and y<=160:
+                    S_BBOX=G_root.bbox('ROOKS')
+                    G_root.create_rectangle(S_BBOX[0],S_BBOX[1],S_BBOX[2],S_BBOX[3], outline='red', width=3, tags='rect')
+                    G_root.delete(S_BBOX)
+                    price=50
+                    item='sand_rook.png'
+                    print('cAPTURE SUCCES')
+
+                elif y>=180 and y<=275:
+                    F_BBOX=G_root.bbox('ROOKF')
+                    G_root.create_rectangle(F_BBOX[0],F_BBOX[1],F_BBOX[2],F_BBOX[3], outline='red', width=3, tags='rect')
+                    G_root.delete(F_BBOX)
+                    price=150
+                    item='fire_rook.png'
+                    print(item)
+                    print(str(price))
+                    print('cAPTURE SUCCES')
+                    
+            elif event.x>=1120 and event.x<=1300:
+                if event.y>=50 and event.y<=160:
+                    R_BBOX=G_root.bbox('ROOKR')
+                    G_root.create_rectangle(R_BBOX[0],R_BBOX[1],R_BBOX[2],R_BBOX[3], outline='red', width=3, tags='rect')
+                    G_root.delete(R_BBOX)
+                    price=100
+                    item='rock_rook.png'
+                    print(item)
+                    print(str(price))
+                    print('cAPTURE SUCCES')
+
+                elif event.y>=180 and event.y<=275:
+                    W_BBOX=G_root.bbox('ROOKW')
+                    G_root.create_rectangle(W_BBOX[0],W_BBOX[1],W_BBOX[2],W_BBOX[3], outline='red', width=3, tags='rect')
+                    G_root.delete(W_BBOX)
+                    price=150
+                    print(item)
+                    print(str(price))
+                    item='water_rook.png'
+                    print('cAPTURE SUCCES')
+        elif x<1000:
+            if price!=0 and item!='':
+                place(price, item, x, y)
+                price=0
+                item=''
+            else:
+                print('No item selected')
+
+
+        l=G_root.find_overlapping(event.x, event.y, event.x+60, event.y+60)
+        p=G_root.find_all()
+
+
+    def place(price, item, x,y):
+        global coins
+        l=G_root.find_overlapping(x, y, x+60, y+60)
+        money=coins
+        if money>price:
+            it=LoadImg(item)
+            G_root.its=it
+            G_root.create_image(x, y, anchor=NW, image=it, tag='tower') 
+            G_root.delete('rect')
+            print('place')
+
+
+
+
+
+                
+        #if money>value:
+
+
     
     if lines[0][0]=="0":
         print('0')
-        #posteriormente ingresar codigo para, el 0 indica que no hay partida guardada
+       
     elif lines[0][0]=="1":
         print('1')
         #1 indica que hay partida guardad, por lo que se procedera a leer el nombre para registrarlo y se leera la cantidad de monedas y el nivel en el que se encunetra el jugador
-        
 
+
+###Bindings
+    g_root.bind("<Button-1>", select)
+    
     
     
 
@@ -193,7 +304,11 @@ def INICIO():
         mixer.music.stop()
         mixer.music.unload()
         name=str(Name.get())
-        money=coins
+        money=str(coins)
+        if len(money)==3:
+            money='0'+money
+        elif len(money)==2:
+            money='00'+money
         f=open(user+'/Desktop/proyecto_taller_1/SAVEGAME.txt', 'w')
         f.write('10'+name+money)
         f.close
