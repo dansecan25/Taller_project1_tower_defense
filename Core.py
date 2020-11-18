@@ -42,7 +42,7 @@ mixer.music.play(loops=-1)
 
 def INICIO():
     global coins
-    coins=100
+    coins=9999
     global price
     price=0
     global item
@@ -187,6 +187,8 @@ def INICIO():
         y=event.y
         print(str(y))
         print(str(x))
+        print('Item inicial '+item)
+        print('inicial price '+str(price))
         if x>1000:
             if x>=1020 and x<=1110:
                 if y>=50 and y<=160:
@@ -223,15 +225,13 @@ def INICIO():
                     G_root.create_rectangle(W_BBOX[0],W_BBOX[1],W_BBOX[2],W_BBOX[3], outline='red', width=3, tags='rect')
                     G_root.delete(W_BBOX)
                     price=150
+                    item='water_rook.png'
                     print(item)
                     print(str(price))
-                    item='water_rook.png'
                     print('cAPTURE SUCCES')
         elif x<1000:
             if price!=0 and item!='':
-                place(price, item, x, y)
-                price=0
-                item=''
+                place(x, y)
             else:
                 print('No item selected')
 
@@ -240,16 +240,710 @@ def INICIO():
         p=G_root.find_all()
 
 
-    def place(price, item, x,y):
+
+    def place(x,y):
         global coins
+        global price
+        global item
         l=G_root.find_overlapping(x, y, x+60, y+60)
         money=coins
-        if money>price:
-            it=LoadImg(item)
-            G_root.its=it
-            G_root.create_image(x, y, anchor=NW, image=it, tag='tower') 
+        if money>=price:
+            if x>=102 and x<=196:
+                if y>=156 and y<=246:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=102
+                    pos_y=156
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+                    
+
+                elif y>=247 and y<=336:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=102
+                    pos_y=247
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=337 and y<=431:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=102
+                    pos_y=337
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+                elif y>=432 and y<=523:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=102
+                    pos_y=432
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=524 and y<=616:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=102
+                    pos_y=524
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=617 and y<=707:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=102
+                    pos_y=617
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                    
+
+            elif x>=197 and x<=291:
+                if y>=156 and y<=246:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=198
+                    pos_y=156
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+                    
+
+                elif y>=247 and y<=336:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=198
+                    pos_y=247
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=337 and y<=431:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=198
+                    pos_y=337
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+                elif y>=432 and y<=523:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=198
+                    pos_y=432
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=524 and y<=616:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=198
+                    pos_y=524
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=617 and y<=707:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=198
+                    pos_y=617
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+            elif x>=292 and x<=385:
+                if y>=156 and y<=246:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=293
+                    pos_y=156
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+                    
+
+                elif y>=247 and y<=336:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=293
+                    pos_y=247
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=337 and y<=431:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=293
+                    pos_y=337
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+                elif y>=432 and y<=523:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=293
+                    pos_y=432
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=524 and y<=616:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=293
+                    pos_y=524
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=617 and y<=707:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=293
+                    pos_y=617
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+            elif x>=386 and x<=475:
+                if y>=156 and y<=246:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=387
+                    pos_y=156
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+                    
+
+                elif y>=247 and y<=336:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=387
+                    pos_y=247
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=337 and y<=431:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=387
+                    pos_y=337
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+                elif y>=432 and y<=523:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=387
+                    pos_y=432
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=524 and y<=616:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=387
+                    pos_y=524
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=617 and y<=707:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=387
+                    pos_y=617
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+            elif x>=476 and x<=568:
+                if y>=156 and y<=246:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=477
+                    pos_y=156
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+                    
+
+                elif y>=247 and y<=336:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=477
+                    pos_y=247
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=337 and y<=431:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=477
+                    pos_y=337
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+                elif y>=432 and y<=523:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=477
+                    pos_y=432
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=524 and y<=616:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=477
+                    pos_y=524
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=617 and y<=707:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=477
+                    pos_y=617
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+            elif x>=569 and x<=663:
+                if y>=156 and y<=246:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=570
+                    pos_y=156
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+                    
+
+                elif y>=247 and y<=336:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=570
+                    pos_y=247
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=337 and y<=431:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=570
+                    pos_y=337
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+                elif y>=432 and y<=523:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=570
+                    pos_y=432
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=524 and y<=616:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=570
+                    pos_y=524
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=617 and y<=707:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=570
+                    pos_y=617
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+            elif x>=664 and x<=757:
+                if y>=156 and y<=246:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=665
+                    pos_y=156
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+                    
+
+                elif y>=247 and y<=336:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=665
+                    pos_y=247
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=337 and y<=431:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=665
+                    pos_y=337
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+                elif y>=432 and y<=523:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=665
+                    pos_y=432
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=524 and y<=616:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=665
+                    pos_y=524
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=617 and y<=707:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=665
+                    pos_y=617
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+            elif x>=758 and x<=850:
+                if y>=156 and y<=246:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=759
+                    pos_y=156
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+                    
+
+                elif y>=247 and y<=336:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=759
+                    pos_y=247
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=337 and y<=431:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=759
+                    pos_y=337
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+                elif y>=432 and y<=523:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=759
+                    pos_y=432
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=524 and y<=616:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=759
+                    pos_y=524
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=617 and y<=707:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=759
+                    pos_y=617
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+            elif x>=851 and x<=1000:
+                if y>=156 and y<=246:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=852
+                    pos_y=156
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+                    
+
+                elif y>=247 and y<=336:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=852
+                    pos_y=247
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=337 and y<=431:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=852
+                    pos_y=337
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+
+                elif y>=432 and y<=523:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=852
+                    pos_y=432
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=524 and y<=616:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=852
+                    pos_y=524
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+                elif y>=617 and y<=707:
+                    coins-=price
+                    it=LoadImg(item)
+                    G_root.its=it
+                    pos_x=852
+                    pos_y=617
+                    tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
+                    G_root.delete('rect')
+                    tower_thread(pos_x, pos_y, tw)
+                    item=''
+                    price=0
+
+            else:
+                print('cant place')
+                item=''
+                price=0
+                G_root.delete('rect')
+        else:
+            print('no placing')
+            item=''
+            price=0
             G_root.delete('rect')
-            print('place')
+            
+
+
+    def tower_thread(x,y, objt):
+        print('yes')
 
 
 
