@@ -113,82 +113,66 @@ def INICIO():
     lines=f.readlines()
     f.close()
 
+#Enamy creation
+    def enemy():
+        muu=Thread(target=crte, args=())
+        muu.start()
+        
+        G_root.after(10000,enemy)
+    def crte():
+        import random
+        from random import randrange
+        rand=random.randrange(94,760,95)
+        ren=random.randrange(1,5,1)
+        if ren==1:
+            arq=LoadImg('arquero.png')
+            G_root.enemigo=arq
+            Enemy=G_root.create_image(rand, 780, anchor=NW, image=arq, tags='enemy')
+            movementEnemy(Enemy, 12)
 
-###asignar un bbox a cada cuadro de la matriz
-###Fila 1
-    G_root.create_rectangle(102, 156, 196, 246, outline="", tags="f1c1")
-    G_root.create_rectangle(197, 156, 291, 246, outline="", tags="f1c2")
-    G_root.create_rectangle(292, 156, 385, 246, outline="", tags="f1c3")
-    G_root.create_rectangle(386, 156, 475, 246, outline="", tags="f1c4")
-    G_root.create_rectangle(476, 156, 568, 246, outline="", tags="f1c5")
-    G_root.create_rectangle(569, 156, 663, 246, outline="", tags="f1c6")
-    G_root.create_rectangle(664, 156, 757, 246, outline="", tags="f1c7")
-    G_root.create_rectangle(758, 156, 850, 246, outline="", tags="f1c8")
-    G_root.create_rectangle(851, 156, 942, 246, outline="", tags="f1c9")
-####Fila 2
-    G_root.create_rectangle(102, 246, 196, 336, outline="", tags="f2c1")
-    G_root.create_rectangle(197, 246, 291, 336, outline="", tags="f2c2")
-    G_root.create_rectangle(292, 246, 385, 336, outline="", tags="f2c3")
-    G_root.create_rectangle(386, 246, 475, 336, outline="", tags="f2c4")
-    G_root.create_rectangle(476, 246, 568, 336, outline="", tags="f2c5")
-    G_root.create_rectangle(569, 246, 663, 336, outline="", tags="f2c6")
-    G_root.create_rectangle(664, 246, 757, 336, outline="", tags="f2c7")
-    G_root.create_rectangle(758, 246, 850, 336, outline="", tags="f2c8")
-    G_root.create_rectangle(851, 246, 942, 336, outline="", tags="f2c9")
-####Fila 3
-    G_root.create_rectangle(102, 337, 196, 431, outline="", tags="f3c1")
-    G_root.create_rectangle(197, 337, 291, 431, outline="", tags="f3c2")
-    G_root.create_rectangle(292, 337, 385, 431, outline="", tags="f3c3")
-    G_root.create_rectangle(386, 337, 475, 431, outline="", tags="f3c4")
-    G_root.create_rectangle(476, 337, 568, 431, outline="", tags="f3c5")
-    G_root.create_rectangle(569, 337, 663, 431, outline="", tags="f3c6")
-    G_root.create_rectangle(664, 337, 757, 431, outline="", tags="f3c7")
-    G_root.create_rectangle(758, 337, 850, 431, outline="", tags="f3c8")
-    G_root.create_rectangle(851, 337, 942, 431, outline="", tags="f3c9")
+        elif ren==2:
+            can=LoadImg('canibal.png')
+            G_root.enemigo=can
+            Enemy=G_root.create_image(rand, 780, anchor=NW, image=can, tags='enemy')
+            movementEnemy(Enemy, 14)
 
-####Fila 4
-    G_root.create_rectangle(102, 432, 196, 523, outline="", tags="f4c1")
-    G_root.create_rectangle(197, 432, 291, 523, outline="", tags="f4c2")
-    G_root.create_rectangle(292, 432, 385, 523, outline="", tags="f4c3")
-    G_root.create_rectangle(386, 432, 475, 523, outline="", tags="f4c4")
-    G_root.create_rectangle(476, 432, 568, 523, outline="", tags="f4c5")
-    G_root.create_rectangle(569, 432, 663, 523, outline="", tags="f4c6")
-    G_root.create_rectangle(664, 432, 757, 523, outline="", tags="f4c7")
-    G_root.create_rectangle(758, 432, 850, 523, outline="", tags="f4c8")
-    G_root.create_rectangle(851, 432, 942, 523, outline="", tags="f4c9")
+        elif ren==3:
+            esq=LoadImg('escudero.png')
+            G_root.enemigo=esq
+            Enemy=G_root.create_image(rand, 780, anchor=NW, image=esq, tags='enemy')
+            movementEnemy(Enemy, 10)
 
-####Fila 5
-    G_root.create_rectangle(102, 524, 196, 616, outline="", tags="f5c1")
-    G_root.create_rectangle(197, 524, 291, 616, outline="", tags="f5c2")
-    G_root.create_rectangle(292, 524, 385, 616, outline="", tags="f5c3")
-    G_root.create_rectangle(386, 524, 475, 616, outline="", tags="f5c4")
-    G_root.create_rectangle(476, 524, 568, 616, outline="", tags="f5c5")
-    G_root.create_rectangle(569, 524, 663, 616, outline="", tags="f5c6")
-    G_root.create_rectangle(664, 524, 757, 616, outline="", tags="f5c7")
-    G_root.create_rectangle(758, 524, 850, 616, outline="", tags="f5c8")
-    G_root.create_rectangle(851, 524, 942, 616, outline="", tags="f5c9")
-####Fila 6
-    G_root.create_rectangle(102, 617, 196, 707, outline="", tags="f6c1")
-    G_root.create_rectangle(197, 617, 291, 707, outline="", tags="f6c2")
-    G_root.create_rectangle(292, 617, 385, 707, outline="", tags="f6c3")
-    G_root.create_rectangle(386, 617, 475, 707, outline="", tags="f6c4")
-    G_root.create_rectangle(476, 617, 568, 707, outline="", tags="f6c5")
-    G_root.create_rectangle(569, 617, 663, 707, outline="", tags="f6c6")
-    G_root.create_rectangle(664, 617, 757, 707, outline="", tags="f6c7")
-    G_root.create_rectangle(758, 617, 850, 707, outline="", tags="f6c8")
-    G_root.create_rectangle(851, 617, 942, 707, outline="", tags="f6c9")
+
+        elif ren==4:
+            lena=LoadImg('lenador.png')
+            G_root.enemigo=lena
+            Enemy=G_root.create_image(rand, 780, anchor=NW, image=lena, tags='enemy')
+            movementEnemy(Enemy, 13)
+
+    def movementEnemy(en,t):
+        en_coords=G_root.coords('enemy')
+        x=en_coords[0]
+        y=en_coords[1]
+        G_root.move(en, 0, -20)
+        time.sleep(t)
+        movementEnemy(en, t)
+
+    enemy()
+        
+        
+        
+        
+    
 
 
 
+###Selecting and placing rooks
+    
     def select(event):
         global price
         global item
         x=event.x
         y=event.y
-        print(str(y))
-        print(str(x))
-        print('Item inicial '+item)
-        print('inicial price '+str(price))
         if x>1000:
             if x>=1020 and x<=1110:
                 if y>=50 and y<=160:
@@ -197,7 +181,7 @@ def INICIO():
                     G_root.delete(S_BBOX)
                     price=50
                     item='sand_rook.png'
-                    print('cAPTURE SUCCES')
+   
 
                 elif y>=180 and y<=275:
                     F_BBOX=G_root.bbox('ROOKF')
@@ -205,9 +189,7 @@ def INICIO():
                     G_root.delete(F_BBOX)
                     price=150
                     item='fire_rook.png'
-                    print(item)
-                    print(str(price))
-                    print('cAPTURE SUCCES')
+
                     
             elif event.x>=1120 and event.x<=1300:
                 if event.y>=50 and event.y<=160:
@@ -216,9 +198,7 @@ def INICIO():
                     G_root.delete(R_BBOX)
                     price=100
                     item='rock_rook.png'
-                    print(item)
-                    print(str(price))
-                    print('cAPTURE SUCCES')
+
 
                 elif event.y>=180 and event.y<=275:
                     W_BBOX=G_root.bbox('ROOKW')
@@ -226,9 +206,7 @@ def INICIO():
                     G_root.delete(W_BBOX)
                     price=150
                     item='water_rook.png'
-                    print(item)
-                    print(str(price))
-                    print('cAPTURE SUCCES')
+
         elif x<1000:
             if price!=0 and item!='':
                 place(x, y)
@@ -257,7 +235,7 @@ def INICIO():
                     pos_y=156
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
                     
@@ -270,7 +248,7 @@ def INICIO():
                     pos_y=247
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -282,7 +260,7 @@ def INICIO():
                     pos_y=337
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -295,7 +273,7 @@ def INICIO():
                     pos_y=432
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -307,7 +285,7 @@ def INICIO():
                     pos_y=524
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -319,7 +297,7 @@ def INICIO():
                     pos_y=617
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -334,7 +312,7 @@ def INICIO():
                     pos_y=156
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
                     
@@ -347,7 +325,7 @@ def INICIO():
                     pos_y=247
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -359,7 +337,7 @@ def INICIO():
                     pos_y=337
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -372,7 +350,7 @@ def INICIO():
                     pos_y=432
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -384,7 +362,7 @@ def INICIO():
                     pos_y=524
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -396,7 +374,7 @@ def INICIO():
                     pos_y=617
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -410,7 +388,7 @@ def INICIO():
                     pos_y=156
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
                     
@@ -423,7 +401,7 @@ def INICIO():
                     pos_y=247
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -435,7 +413,7 @@ def INICIO():
                     pos_y=337
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -448,7 +426,7 @@ def INICIO():
                     pos_y=432
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -460,7 +438,7 @@ def INICIO():
                     pos_y=524
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -472,7 +450,7 @@ def INICIO():
                     pos_y=617
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -486,7 +464,7 @@ def INICIO():
                     pos_y=156
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
                     
@@ -499,7 +477,7 @@ def INICIO():
                     pos_y=247
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -511,7 +489,7 @@ def INICIO():
                     pos_y=337
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -524,7 +502,7 @@ def INICIO():
                     pos_y=432
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -536,7 +514,7 @@ def INICIO():
                     pos_y=524
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -548,7 +526,7 @@ def INICIO():
                     pos_y=617
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -562,7 +540,7 @@ def INICIO():
                     pos_y=156
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
                     
@@ -575,7 +553,7 @@ def INICIO():
                     pos_y=247
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -587,7 +565,7 @@ def INICIO():
                     pos_y=337
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -600,7 +578,7 @@ def INICIO():
                     pos_y=432
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -612,7 +590,7 @@ def INICIO():
                     pos_y=524
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -624,7 +602,7 @@ def INICIO():
                     pos_y=617
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -637,7 +615,7 @@ def INICIO():
                     pos_y=156
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
                     
@@ -650,7 +628,7 @@ def INICIO():
                     pos_y=247
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -662,7 +640,7 @@ def INICIO():
                     pos_y=337
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -675,7 +653,7 @@ def INICIO():
                     pos_y=432
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -687,7 +665,7 @@ def INICIO():
                     pos_y=524
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -699,7 +677,7 @@ def INICIO():
                     pos_y=617
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -712,7 +690,7 @@ def INICIO():
                     pos_y=156
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
                     
@@ -725,7 +703,7 @@ def INICIO():
                     pos_y=247
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -737,7 +715,7 @@ def INICIO():
                     pos_y=337
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -750,7 +728,7 @@ def INICIO():
                     pos_y=432
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -762,7 +740,7 @@ def INICIO():
                     pos_y=524
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -774,7 +752,7 @@ def INICIO():
                     pos_y=617
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -788,7 +766,7 @@ def INICIO():
                     pos_y=156
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
                     
@@ -801,7 +779,7 @@ def INICIO():
                     pos_y=247
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -813,7 +791,7 @@ def INICIO():
                     pos_y=337
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -826,7 +804,7 @@ def INICIO():
                     pos_y=432
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -838,7 +816,7 @@ def INICIO():
                     pos_y=524
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -850,7 +828,7 @@ def INICIO():
                     pos_y=617
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -863,7 +841,7 @@ def INICIO():
                     pos_y=156
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
                     
@@ -876,7 +854,7 @@ def INICIO():
                     pos_y=247
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -888,7 +866,7 @@ def INICIO():
                     pos_y=337
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -901,7 +879,7 @@ def INICIO():
                     pos_y=432
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -913,7 +891,7 @@ def INICIO():
                     pos_y=524
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -925,7 +903,7 @@ def INICIO():
                     pos_y=617
                     tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') 
                     G_root.delete('rect')
-                    tower_thread(pos_x, pos_y, tw)
+                    tower_thread(pos_x, pos_y, item)
                     item=''
                     price=0
 
@@ -939,18 +917,67 @@ def INICIO():
             item=''
             price=0
             G_root.delete('rect')
-            
 
+            
+    def move_misil(misil):
+        G_root.move(misil, 0, +10)
+        time.sleep(0.1)
+        move_misil(misil)
+            
+    def shooting(objt,x,y):
+        a='sand_rook.png'
+        b='rock_rook.png'
+        c='fire_rook.png'
+        d='water_rook.png'
+        overlap=G_root.find_overlapping(x, y, x+50, y+600)
+        print(overlap)
+        n=len(overlap)
+        tagss=G_root.gettags(overlap[2])
+        print(tagss[0])
+        for i in range(0,n):
+            tagsss=G_root.gettags(overlap[i])
+            print(tagss[0])
+        
+        if tagss[0]=='enemy':
+            if objt==a:
+                misl=LoadImg('sand.png')
+                G_root.wteer=misl
+                mis=G_root.create_image(x+10, y+10, anchor=NW, tags='misil')
+                move_misil(mis)
+            elif objt==b:
+                misl=LoadImg('rock.png')
+                G_root.wteer=misl
+                mis=G_root.create_image(x+10, y+10, anchor=NW, tags='misil')
+                move_misil(mis)
+            elif objt==c:
+                misl=LoadImg('fire.png')
+                G_root.wteer=misl
+                mis=G_root.create_image(x+10, y+10, anchor=NW, tags='misil')
+                move_misil(mis)
+            elif objt==d:
+                misl=LoadImg('water.png')
+                G_root.wteer=misl
+                mis=G_root.create_image(x+10, y+10, anchor=NW, tags='misil')
+                move_misil(mis)
+            else:
+                shooting(objt,x,y)
+
+            
+        
+        
 
     def tower_thread(x,y, objt):
+        crte=Thread(target=shooting, args=(objt,x, y))
+        crte.start()
         print('yes')
+        alli=G_root.find_all()
+        print(alli)
+        n=len(alli)
+        alli=list(alli)
+        print('print alli 0 ',alli[2])
+        print('tags',G_root.gettags(alli[2]))
 
 
-
-
-
-                
-        #if money>value:
 
 
     
