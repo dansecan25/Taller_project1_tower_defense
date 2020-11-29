@@ -1,1 +1,1 @@
-10,12345678,9699,sand_rook.png,102,156,fire_rook.png,569,156,rock_rook.png,292,156,
+1,Daniel25,9624,1,water_rook.png,386,156,water_rook.png,386,337,water_rook.png,386,524,
