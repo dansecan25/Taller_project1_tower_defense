@@ -57,7 +57,218 @@ mixer.music.set_volume(0.2)
 mixer.music.load(user+'/Desktop/proyecto_taller_1/music/lobby.mp3')
 mixer.music.play(loops=-1)
 
+def anima_win():
+    W_root=Toplevel() 
+    g_root.title('GANASTE') 
+    g_root.minsize(200, 200)
+    g_root.resizable(width=NO, height=NO)
 
+    w_root=Canvas(W_root, width=200, height=200, bg='light green')
+    w_root.place(x=0, y=0)
+
+    w_root.create_text(100,100,font=('Arial', 12), fill='black',text='FELICIDADES! HA GANADO!')
+    time.sleep(3)
+    g_root.destroy()
+    
+
+
+
+
+
+
+def anima_loose():
+    L_root=Toplevel() 
+    L_root.title('DERROTA') 
+    L_root.minsize(200, 200)
+    L_root.resizable(width=NO, height=NO)
+
+    l_root=Canvas(L_root, width=200, height=200, bg='black')
+    l_root.place(x=0, y=0)
+
+    l_root.create_text(100,100,font=('Arial', 12), fill='white',text='Lo sentimos, DERROTADO')
+    time.sleep(3)
+    L_root.destroy()
+    
+
+def v_puntajes():
+    global namae
+    namae=[]
+    global ordenados
+    ordenados=[]
+    P_root=Toplevel() 
+    P_root.title('DERROTA') 
+    P_root.minsize(650, 500)
+    P_root.resizable(width=NO, height=NO)
+
+    p_root=Canvas(P_root, width=650, height=500, bg='light blue')
+    p_root.place(x=0, y=0)
+
+    p=open(user+'/Desktop/proyecto_taller_1/puntajes.txt','r') #abre la lista de puntajes para leerla
+    lineas=p.readlines() #guarda el contenido de los puntajes
+    p.close()
+
+
+    def etadpu(M,res):
+        print('Namae update= ',M, 'RES= ',res)
+        restyo(M,[],0,len(M),res)
+
+    def restyo(N,new,i,n,res):
+        
+        return etadpu_aux(N,[],0,len(N),res)
+
+    def etadpu_aux(N,new,i,n,res):
+        global namae
+        if i==n:
+            print('El namae final= ',namae)
+            print('La i F= ',i,'la n F= ',n)
+            return 0
+        elif N[i][3]==res[3] and N[i][0]==res[0] and N[i][1] == res[1] and N[i][2]==res[2]:
+            print('N es= ',N,' res es= ',res)
+            global ordenados
+            ordenados.append(res)
+            return etadpu_aux(N,new,i+1,n,res)
+        
+        elif N[i][3]!=res[3] and N[i][0]!=res[0] and N[i][1] != res[1] and N[i][2]!=res[2]:
+            print('i es= ',i)
+            lista=N[i]
+            namae.append(lista)
+            print('Nuevo namae= ',new)
+            return etadpu_aux(N,new,i+1,n,res)
+            
+            
+
+
+
+    def comparsaS(M,i,n,res):
+        global namae
+        
+        if i==n:
+            etadpu(M,res)
+            if namae==[]:
+                global ordenados
+                print('Final= ', ordenados)
+            else:
+                return comparsaH(namae,0,len(namae),[0,0])
+        elif M[i][2]>=res[2] and M[i][0]>=res[0] and M[i][1]<res[1]:
+            return comparsaS(M,i+1,n,res)
+            
+
+        elif (M[i][2]<res[2] and M[i][0]<res[0] and M[i][1]<res[1] )or(M[i][2]<res[2] and M[i][0]<res[0] and M[i][1]>=res[1]):
+            return comparsaS(M,i+1,n,M[i])
+        else:
+            return comparsaS(M,i+1,n,res)
+            
+
+    def comparsaM(M,i,n,res): #M es [hora,minutos, segundos,nombre]
+        if i==n:
+            comparsaS(M,0,n,res)
+        elif M[i][1]>=res[1] and M[i][1]:
+            return comparsaM(M,i+1,n,res)
+        elif M[i][1]<res[1] and M[i][0]<res[0]:
+            return comparsaM(M,i+1,n,M[i])
+        else:
+            return comparsaM(M,i+1,n,res)
+    
+    def comparsaH(M,i,n,res):
+        if i==n:
+            comparsaM(M,0,n,res)
+        elif M[i][0]==0:
+            return comparsaH(M,n,n,M[i])
+        elif M[i][0]>=res[0]:
+            return comparsaH(M,i+1,n,res)
+        elif M[i][0]<res[0]:
+            return comparsaH(M,i+1,n,M[i])
+
+        
+    def pre_comparsaH(M,i,n,res):
+        global namae
+        namae=[]
+        print('LA M: ',M)
+        return comparsaH(M,0,len(M),[0,0])
+            
+    
+    def extraer(L,i,n):
+        global namae
+        if L[i]=='':
+            
+            return pre_comparsaH(namae,0,len(namae),[0,0])
+        else:
+            
+            nombre=L[i]
+            hora=int(L[i+1])
+            minu=int(L[i+2])
+            sec=int(L[i+3])
+            lista=[hora,minu,sec,nombre]
+            namae.append(lista)
+            return extraer(L[4:],i,n)
+            
+        
+        
+
+    def veo(lineas):
+        return veo_aux(lineas,0,len(lineas))
+    
+    def veo_aux(L,i,n):
+        if i==n:
+            return 0
+        else:
+            global lalala
+            lalala=L[i].strip().split(',') #agarra la lista de cada lista del readlines y si hay comma, lo separa creando la lista
+
+    veo(lineas)
+    global lalala #[nombre,hora,minuto,segundo,]
+
+    if len(lalala)>0:
+        extraer(lalala,0, len(lalala))
+
+
+
+
+
+
+    
+def ventana_about():
+    information= """
+    ---------------------------------------------------
+    Instituto Tecnologico de Costa Rica
+    Ingenieria en Computadores
+    Autor: Daniel Serrano Canas
+    Profesor: Jeff Schmidt Peralta
+    Pais:Costa Rica
+    Version de python: 3.8.9
+    Biblioteca:Tkinter, pygame, random, os, time, threading
+    Entradas:Teclas w, a, s, d y el boton
+    derecho del mouse
+    Salidas:movimientos y disparos
+    ---------------------------------------------------
+
+    """
+    root.withdraw()
+    About=Toplevel()
+    About.title('info')
+    About.minsize(800,400)
+    About.resizable(width=NO, height=NO)
+
+###Info Canvas
+    NA_root=Canvas(About,  width=800, height=400, bg='white')
+    NA_root.place(x=0, y=0)
+
+###About text
+    about=Label(NA_root, text=information, font=('Arial',15),bg='white',fg='black', justify=LEFT)
+    about.place(x=300, y=50)
+    def back():
+        About.destroy()
+        root.deiconify()
+###About Image
+    autor=LoadImg("imagen_perfil2.png")
+    NA_root.img=autor
+    NA_root.create_image(50, 70, anchor=NW, image=autor)
+###Info Back
+    Back1=Button(NA_root, text="Back", command=back, fg='white', bg='blue')
+    Back1.place(x=50, y=350)
+
+
+    
 def INICIO():
     global rectann_flag
     rectann_flag=False
@@ -67,7 +278,7 @@ def INICIO():
     price=0
     global item
     item=''
-    global maTRooks #aqui van los rooks que se colocan en el tablero con el orden [rook,x,y]
+    global maTRooks #aqui van los rooks que se colocan en el tablero con el orden [id,rook,x,y]
     maTRooks=[]
     global lisPast #aqui van los rooks que se crearon en una partida pasada
     lisPast=[]
@@ -77,10 +288,11 @@ def INICIO():
     name=str(Name.get())
     global maTrizX #matriz con las posiciones en x o inicio y fin de cada columna
     maTrizX=[[102, 196],[197, 291],[292,385],[386,475],[476,568],[569,663],[664, 757],[758,850],[851,1000]] #coordenadas en x
+    global maTrizY
     maTrizY=[[156,246],[247,336],[337, 431],[432, 523],[524,616],[617,707]]  #coordenadas en y
     global VidsEn  #en esta matriz se guardan las vidas e id de los enemigos de la forma [id,vida]
     VidsEn=[]
-    global lisVidas #lista de vidas de las torres
+    global lisVidas #lista de vidas de las torres [id,hp]
     lisVidas=[]
     global seconds
     global minute
@@ -98,6 +310,8 @@ def INICIO():
     stringEnes=''
     global stringRooks
     stringRooks=''
+    global monedins
+    monedins=[]
     
     mixer.music.unload()
     root.withdraw() #esconde la ventana principal
@@ -159,7 +373,7 @@ def INICIO():
     G_root.create_text(1100,380,font=('Arial', 12), fill='black', text='Points:')  #crea el texto que va mostrar los puntos
     G_root.create_text(1130,380,font=('Arial', 12), fill='black', text=points, tags='text')  #crea el texto con los puntos
     G_root.create_text(1100,430,font=('Arial', 12), fill='black', text='Coins:') #crea un texto para mostrar las monedas
-    G_root.create_text(1130,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext') #mostrara la cantidad de monedas del jugador
+    G_root.create_text(1132,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext') #mostrara la cantidad de monedas del jugador
 
     hours=str(hour)+':'
     minutes=str(minute)+':'
@@ -176,8 +390,7 @@ def INICIO():
             global seconds
             global minute
             global hour
-            print(hour,':',minute,':',seconds)
-            if seconds>=60:
+            if seconds>=59:
                 seconds=0
                 minute+=1
                 minutes=str(minute)+':'
@@ -189,7 +402,7 @@ def INICIO():
                 time.sleep(1)
             
 
-            elif minute>=60:
+            elif minute>=59:
                 seconds=0
                 minute=0
                 hour+=1
@@ -204,7 +417,7 @@ def INICIO():
                 G_root.create_text(1130,500,font=('Arial', 12),fill='black',text=second,tags='seconds')
                 time.sleep(1)
             
-            elif seconds<60:
+            elif seconds<59:
                 seconds+=1
                 G_root.delete('seconds')
                 second=str(seconds)
@@ -219,11 +432,244 @@ def INICIO():
 
         
         
-        
-        
+###actualiza lista de monedas________________________________________________________________________________________________        
+    def actual_moneda(M,ID,j,m):
+        global monedins
+        if j==m:
+            return 0
+        elif M[j][0]==ID:
+            return actual_moneda(M,ID,j+1,m)
+        else:
+            ids=M[j][0]
+            item=M[j][1]
+            lista=[ids,item]
+            monedins.append(lista)
+            actual_moneda(M,ID,j+1,m)
+            
+    def its_inside(M,ID,i,m): #verifica si la moneda existe
+        if i==m:
+            return False
+        elif M[i][0]==ID:
+            return True
+        else:
+            its_inside(M,ID,i+1,m)
+
+            
+
+    def borrar_monedas(M,ID): #borra la moneda si no se llega a elegir
+        if its_inside(M,ID,0,len(M))==True:
+            global monedins
+            monedins=[]
+            G_root.delete(ID)
+            actual_moneda(M,ID,0,len(M))
+            return 0
+        else:
+            return 0
     
 
+###Deleting an existing rook______________________________________________________________________________________________________________________________
+    def ROOKS(L,M,i,j,n,m): #verifica si se toca a un rook
+        if j==m:
+            return False
+        elif i==n:
+            return ROOKS(L,M,0,j+1,n,m)
+        elif L[i]==M[j][0]:
+            return True
+        elif L[i]!=M[j][0]:
+            return ROOKS(L,M,i+1,j,n,m)
+    def get_rook(L,M,i,j,n,m): #obtiene el rook seleccionado
+        if j==m:
+            return 0
+        elif i==n:
+            return get_rook(L,M,0,j+1,n,m)
+        elif L[i]==M[j][0]:
+            return L[i]
+        elif L[i]!=M[j][0]:
+            return get_rook(L,M,i+1,j,n,m)
 
+    def updayeLives(ID,L,j,m): #actualiza la lista de vidas de los rooks
+        global lisVidas
+        if j==m:
+            return 0
+        elif ID==L[j][0]:
+            return updayeLives(ID,L,j+1,m)
+        else:
+            ids=L[j][0]
+            hp=L[j][1]
+            lista=[ids,hp]
+            lisVidas.append(lista)
+            return updayeLives(ID,L,j+1,m)
+
+    def updayeRooks(ID,L,j,m): #actualiza la lista de rooks en canvas
+        global maTRooks
+        if j==m:
+            return 0
+        elif ID==L[j][0]:
+            return updayeRooks(ID,L,j+1,m)
+        else:
+            ids=L[j][0]
+            item=L[j][1]
+            x=L[j][2]
+            y=L[j][3]
+            lista=[ids,item,x,y]
+            maTRooks.append(lista)
+            return updayeRooks(ID,L,j+1,m)
+    def coinz(O,T,i,j,n,m): #verifica si se toco una moneda
+        if j==m:
+            return False
+        elif i==n:
+            return coinz(O,T,0,j+1,n,m)
+        elif O[i]==T[j]:
+            return True
+        else:
+            return coinz(O,T,i+1,j,n,m)
+    def get_coin(O,T,i,j,n,m): #obtiene el id de la moneda
+        if j==m:
+            return 0
+        elif i==n:
+            return get_coin(O,T,0,j+1,n,m)
+        elif O[i]==T[j]:
+            return O[i]
+        else:
+            return get_coin(O,T,i+1,j,n,m)
+            
+            
+    def obt_it(mon,M,i,n):
+        if i==n:
+            return 0
+        elif M[i][0]==mon: #si el id concuerda con el id de la moneda en su respectiva lista
+            return M[i][1] #se obtiene el valor de la moneda
+        else:
+            return obt_it(mon,M,i+1,n)
+
+
+
+            
+    def select_izq(event):
+        global maTRooks
+        global lisVidas
+        global coins
+        print('click')
+        x=event.x
+        y=event.y
+        ov=G_root.find_overlapping(x-2,y-2,x+3,y+3)
+        ov=list(ov)
+        tagss=G_root.find_withtag('coins')
+        tagss=list(tagss)
+        if len(tagss)>0:
+            if coinz(ov,tagss,0,0,len(ov),len(tagss))==True: #si se toca una moneda
+                global monedins
+                moneda=get_coin(ov,tagss,0,0,len(ov),len(tagss)) #obtiene id de la moneda
+                item=obt_it(moneda,monedins,0,len(monedins))
+                print('item= ',item)
+                if item=='twenty.png':
+                    coins+=25
+                    G_root.delete('Ctext')
+                    G_root.create_text(1130,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')
+                    borrar_monedas(monedins,moneda)
+                elif item=='hundreth.png':
+                    coins+=100
+                    G_root.delete('Ctext')
+                    G_root.create_text(1130,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')
+                    borrar_monedas(monedins,moneda)
+                elif item=='fifty.png':
+                    coins+=50
+                    G_root.delete('Ctext')
+                    G_root.create_text(1130,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')
+                    borrar_monedas(monedins,moneda)
+                    
+                
+                
+                
+                
+            
+        elif len(maTRooks)>0 and len(lisVidas)>0:
+            if x<1000:
+                
+                
+                if ROOKS(ov,maTRooks,0,0,len(ov),len(maTRooks))==True: #verifica si se toca a un rook
+                    objeto=get_rook(ov,maTRooks,0,0,len(ov),len(maTRooks))
+                    matrooks=maTRooks
+                    lisvidas=lisVidas
+                    lisVidas=[]
+                    maTRooks=[]
+                    updayeLives(objeto,lisvidas,0,len(lisVidas))
+                    updayeRooks(objeto,matrooks,0,len(matrooks))
+                    print('objeto= ',objeto)
+                    G_root.delete(objeto)
+            else:
+                print('Fuera de tablero')
+
+
+                    
+
+
+####Random coins____________________________________________________________________________________________________________________________________________
+
+        
+    def coind():
+        global maTrizX
+        global maTrizY
+        global monedins
+        import random
+        from random import randrange
+        rant=random.randrange(1,25,1)
+        rand_MX=random.randrange(1,9,1)
+        rand_MY=random.randrange(1,6,1)
+        if rant==3:
+            coin=LoadImg('twenty.png')
+            G_root.jij=coin
+            x=maTrizX[int(rand_MX)][0]
+            y=maTrizY[int(rand_MY)][0]
+            cn=G_root.create_image(x,y,anchor=NW,image=coin,tags='coins')
+            item='twenty.png'
+            lista=[cn,item]
+            monedins.append(lista) #crea una lista para guardar temporalmente las monedas
+            time.sleep(5)
+            borrar_monedas(monedins,cn)
+            coind()
+            
+
+        elif rant==6:
+            coin=LoadImg('fifty.png')
+            G_root.jij=coin
+            x=maTrizX[int(rand_MX)][0]
+            y=maTrizY[int(rand_MY)][0]
+            cn=G_root.create_image(x,y,anchor=NW,image=coin,tags='coins')
+            item='fifty.png'
+            lista=[cn,item]
+            monedins.append(lista)
+            time.sleep(5)
+            borrar_monedas(monedins,cn)
+            coind()
+            
+            
+            
+
+        elif rant==13:
+            coin=LoadImg('hundreth.png')
+            G_root.jij=coin
+            x=maTrizX[int(rand_MX)][0]
+            y=maTrizY[int(rand_MY)][0]
+            cn=G_root.create_image(x,y,anchor=NW,image=coin,tags='coins')
+            item='hundreth.png'
+            lista=[cn,item]
+            monedins.append(lista)
+            time.sleep(5)
+            borrar_monedas(monedins,cn)
+            coind()
+
+        else:
+            time.sleep(2)
+            coind()
+
+            
+    MONEIDAS=Thread(target=coind,args=())
+    MONEIDAS.start()
+            
+                    
+
+    
 
 ###Selecting and placing rooks__________________________________________________________________________________________________________________________
     
@@ -292,13 +738,14 @@ def INICIO():
     def hp_reduction(dmg,item,damaged): #empieza a reducir la vida de un objeto
         global lisVidas #se obtienen las listas que tienen los id y vida de los enemigos
         global VidsEn  #----------------------------------------------------------------
+        global enemigos
 
         if damaged=='tower':  #comprueba si la variable damaged es la torre
             print('to reduce tower')
             hp_aux(lisVidas,0,0,len(lisVidas),item,dmg) #manda a llamara la funcion encargada de reducir la vida del rook
             return 0
         elif damaged=='enemy':  #comprueba si la variable damaged es enemy 
-            hp_aux_en(VidsEn,0,0,len(VidsEn),item,dmg) #se llama a la funcion encargada de reducir la vida del enemigo
+            hp_aux_en(VidsEn,0,0,len(VidsEn),item,dmg,enemigos) #se llama a la funcion encargada de reducir la vida del enemigo
             return 0
             
             
@@ -316,10 +763,21 @@ def INICIO():
             return 0
         else:
             return hp_aux(M,i,j+1,m,item,dmg) #en caso de que el item no concuerde con uno el id, entonces se para a la siguiente lista
+    def actualizar_rook(M,ID,i,n):
+        if i==n:
+            return 0
+        elif M[i][0]==ID:
+            return actualizar_rook(M,ID,i+1,n)
+        elif M[i][0]!=ID:
+            global maTRooks
+            lista=M[i]
+            maTRooks.append(lista)
+            return actualizar_rook(M,ID,i+1,n)
+        
 
     def edit(NHP,item,M,i,j,m): #carga la vida reducida, el item, la matriz original, i, j y el largo de la matriz, para actualizar la lista de vidas
         global lisVidas
-        
+
         if j==m:
             return 0
         elif M[j][i]!=item: #si el id de la matriz original es diferente del item al que se le redujo la vida             
@@ -329,6 +787,9 @@ def INICIO():
         
         elif M[j][i]==item: #si el id de la lista es igual al item, entonces  
             if NHP<=0: #si la vida reducida es menor a 0
+                global maTRooks #viene en el ordem [rook,x,y]
+                M=maTRooks
+                actualizar_rook(M,item,0,len(M))
                 G_root.delete(item) #se borra el item
                 return edit(NHP,item, M, i,j+1,m)
                 
@@ -340,30 +801,41 @@ def INICIO():
             return edit(NHP,item, M, i,j+1,m) #se vuelve a llamar para evitar errores
         
 ##reduces enemy hp___________________________________________________________________________________________________________________________________________
-    def hp_aux_en(M,i,j,m,item,dmg): #hacen lo mismo que para la torre
+    def hp_aux_en(M,i,j,m,item,dmg,E): #hacen lo mismo que para la torre
         if j==m:
             return 0
         elif M[j][i]==item:
             new_hp=(M[j][i+1])-dmg
             global VidsEn #en este caso se llama a la lista de vidas de enemigos
             VidsEn=[] #se resetea 
-            edit_en(new_hp,M[j][i],M,0,0,m)
+            edit_en(new_hp,M[j][i],M,0,0,m,E)
             return 0
         else:
-            return hp_aux_en(M,i,j+1,m,item,dmg)
+            return hp_aux_en(M,i,j+1,m,item,dmg,E)
     def actualizar_en(L,ID,j,m): #actualiza los enemigos existentes
         if j==m:
             return 0
         elif L[j][0]==ID:
-            return actualizar_en(L,ID,j+1,m)
+            
+                
+            return actualizar_en(L,ID,j+1,m,)
+                
+            
         elif L[j][0]!=ID:
             global enemigos
             lista=L[j]
             enemigos.append(lista)
             return actualizar_en(L,ID,j+1,m)
+    def f_it(E,i,n,ID):
+        if i==n:
+            return 0
+        elif E[i][0]==ID:
+            return E[i][1]
+        else:
+            return f_it(E,i+1,n,ID)
             
 
-    def edit_en(NHP,item,M,i,j,m): #hacer lo mismo con los rooks
+    def edit_en(NHP,item,M,i,j,m,E): 
         global VidsEn 
         global points
         if j==m:
@@ -371,14 +843,38 @@ def INICIO():
         elif M[j][i]!=item:
             lista=[M[j][i],M[j][i+1]]
             VidsEn.append(lista)
-            return edit_en(NHP,item, M, i, j+1,m)
+            return edit_en(NHP,item, M, i, j+1,m,E)
         
         elif M[j][i]==item:
+            global user
+            
+            A=mixer.Sound(user+'/Desktop/proyecto_taller_1/music/armror.mp3')
+            B=mixer.Sound(user+'/Desktop/proyecto_taller_1/music/hit.mp3')
+            C=mixer.Sound(user+'/Desktop/proyecto_taller_1/music/slick.mp3')
+            if f_it(E,0,len(E),item)=='escudero.png':
+                mixer.Sound.set_volume(A,0.3)
+                mixer.Sound.play(A)
+                
+
+            elif f_it(E,0,len(E),item)=='canibal.png':
+                mixer.Sound.set_volume(B,0.3)
+                mixer.Sound.play(B)
+                
+
+            elif f_it(E,0,len(E),item)=='lenador.png':
+                mixer.Sound.set_volume(C,0.3)
+                mixer.Sound.play(C)
+                
+
+            elif f_it(E,0,len(E),item)=='arquero.png':
+                mixer.Sound.set_volume(B,0.3)
+                mixer.Sound.play(B)
+            
             if NHP<=0:
                 global enemigos
                 enemigos=[]
                 global coins #se llama la variable con la cantidad de monedas
-                actualizar_en(enemigos, item, 0,len(enemigos))
+                actualizar_en(E, item, 0,len(E))
                 coins+=75  #se suman las monedas por derrotar un enemigo
                 G_root.delete(item) #se borra el enemigo
                 points+=1 #se suma un punto
@@ -386,13 +882,13 @@ def INICIO():
                 G_root.delete('Ctext') #se borra el texto con la cantidad de monedas
                 G_root.create_text(1130,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')  #se crean de nuevo con los valores actualizados
                 G_root.create_text(1130,380,font=('Arial', 12), fill='black', text=str(points), tags='text')
-                return edit_en(NHP,item, M, i,j+1,m)
+                return edit_en(NHP,item, M, i,j+1,m,E)
             else:
                 lista=[item,NHP]
                 VidsEn.append(lista)
-                return edit_en(NHP,item, M, i,j+1,m)
+                return edit_en(NHP,item, M, i,j+1,m,E)
         else:
-            return edit_en(NHP,item, M, i,j+1,m)
+            return edit_en(NHP,item, M, i,j+1,m,E)
 
 
 
@@ -422,7 +918,6 @@ def INICIO():
                     price=0 #reinicia el precio
                     G_root.delete('rect')
                     rectann_flag=False
-                    #hacer una lista que guarde el rook y las coordenadas
                     
                 if x>=MatX[jX][iX] and x<=MatX[jX][iX+1]:  #Compara cada coordenada de X
                     if y>=MatY[jY][iY] and y<=MatY[jY][iY+1]: #Compara cada coordenada Y
@@ -445,7 +940,7 @@ def INICIO():
                         pos_y=MatY[jY][iY] #lo mismo pero con y
                         tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower') #crea el rook
                         G_root.delete('rect') #borra el outline del rook seleccionado
-                        tower=[item,pos_x,pos_y]
+                        tower=[tw,item,pos_x,pos_y]
                         hpss=[tw,hp]
                         lisVidas.append(hpss)
                         maTRooks.append(tower)
@@ -514,98 +1009,115 @@ def INICIO():
 
 ###funcion que mueve el misil_____________________________________________________________________________________________                       
     def move_misil(misil,dmg,obj):
-        global lisVidas
-        if R_alive(obj,lisVidas,0,len(lisVidas))==True:
-            en_coords=G_root.coords(misil)
-            x=en_coords[0]
-            y=en_coords[1]
-            overlap=G_root.find_overlapping(x, y, x+30,y+30) #encuentra los objetos haciendo overlap al misil
-            overlap=list(overlap) #los enlista
-            enemys=G_root.find_withtag('enemy') #saca los tags enemigos
-            enemys=list(enemys)
-            if y<=775:
-                if len(overlap)>=2: #overlap siempre va a ser el fondo y o la torre, asi que si es mayor o igual a dos, que compruebe si alguno de esos es el misil
-                    if comp(overlap,enemys,0,0,len(enemys),len(overlap))==True: #si el id del enemigo se encuentra haciendo overlap con el misil
-                        objecT=objects(overlap,enemys,0,0,len(enemys),len(overlap),0) #obtiene el id del enemigo haciendo overlap
-                        hp_reduction(dmg,objecT,'enemy') #manda a llamar la funcion que reduce la vida con el dano producido, el id del objeto(numero entero)y enemy como indicador
-                        G_root.delete(misil) #borra el misil al impactar
-                    else:
-                        G_root.move(misil, 0, 5) #en caso de que no sea un enemigo el que hace overlap, se mueve el misil
-                        time.sleep(0.02)
-                        move_misil(misil,dmg,obj)
+        
+        en_coords=G_root.coords(misil)
+        x=en_coords[0]
+        y=en_coords[1]
+        overlap=G_root.find_overlapping(x, y, x+30,y+30) #encuentra los objetos haciendo overlap al misil
+        overlap=list(overlap) #los enlista
+        enemys=G_root.find_withtag('enemy') #saca los tags enemigos
+        enemys=list(enemys)
+        if y<=775:
+            if len(overlap)>=2: #overlap siempre va a ser el fondo y o la torre, asi que si es mayor o igual a dos, que compruebe si alguno de esos es el misil
+                if comp(overlap,enemys,0,0,len(enemys),len(overlap))==True: #si el id del enemigo se encuentra haciendo overlap con el misil
+                    objecT=objects(overlap,enemys,0,0,len(enemys),len(overlap),0) #obtiene el id del enemigo haciendo overlap
+                    hp_reduction(dmg,objecT,'enemy') #manda a llamar la funcion que reduce la vida con el dano producido, el id del objeto(numero entero)y enemy como indicador
+                    G_root.delete(misil) #borra el misil al impactar
                 else:
-                    G_root.move(misil, 0, 10) #en caso de que no hayan dos objetos haciendo overlap, se mueve el misil
+                    G_root.move(misil, 0, 5) #en caso de que no sea un enemigo el que hace overlap, se mueve el misil
                     time.sleep(0.02)
                     move_misil(misil,dmg,obj)
-                
             else:
-                G_root.delete(misil) #en caso de que se salga del tablero, se elimina el misil
+                G_root.move(misil, 0, 10) #en caso de que no hayan dos objetos haciendo overlap, se mueve el misil
+                time.sleep(0.02)
+                move_misil(misil,dmg,obj)
+                
+        else:
+            G_root.delete(misil) #en caso de que se salga del tablero, se elimina el misil
 
 
 
 
 ###Funcion que verifica si hay un enemigo al final de la columna donde esta el rook______________________________________________________________________________               
     def verify(x,MY):
+        global enemigos
         if len(G_root.find_overlapping(x,MY[0],x+20,MY[1]))>=2:
-            return True
+            L=G_root.find_overlapping(x,MY[0],x+20,MY[1])
+            if ver(enemigos,list(L),0,0,len(L),len(enemigos))==True:
+                return True
         else:
             return False
+
+    def ver(En,L,i,j,n,m):
+        if j==m:
+            return False
+        elif i==n:
+            return ver(En, L, 0,j+1,n,m)
+        elif  L[i]== En[j][0]:
+            return True
+        else:
+            return ver(En,L,i+1,j,n,m)
+
+        
         
 
 ###Funcion que crea el misil_____________________________________________________________________________________________________________________________________
         
     def shooting(objt,x,y,torre): #objt es el rook colocado, x es la equina superior izquierda y y la parte de arriba del cuadrito dentro del tablero
         global maTrizX #llama la funcion con el inicio y final de cada columna
-        maTborderY=[617,773]
+        global lisVidas
+        maTborderY=[156,773]
         a='sand_rook.png'
         b='rock_rook.png'
         c='fire_rook.png'
         d='water_rook.png'
-        if verify(x,maTborderY)==True:
-            if objt==a:  #comprueba si el elemento elegido es igual a tal objeto para entonces crear el misil que le corresponde
+        if R_alive(torre,lisVidas,0,len(lisVidas))==True:
+            print('Lista de vidas: ',lisVidas,' objeto= ',torre)
+            if verify(x,maTborderY)==True:
+                if objt==a:  #comprueba si el elemento elegido es igual a tal objeto para entonces crear el misil que le corresponde
 
-                misl=LoadImg('sand.png')
-                G_root.sndaa=misl
-                mis=G_root.create_image(x+25, y+30, anchor=NW, image=misl, tags='misil')
-                move_misil(mis,2,torre) #se llama a mover el misil con el id del objeto y la cantidad de daño que produce el misil
-                time.sleep(5)
-                shooting(objt,x,y,torre)
-                
-            elif objt==b:
+                    misl=LoadImg('sand.png')
+                    G_root.sndaa=misl
+                    mis=G_root.create_image(x+25, y+30, anchor=NW, image=misl, tags='misil')
+                    move_misil(mis,2,torre) #se llama a mover el misil con el id del objeto y la cantidad de daño que produce el misil
+                    time.sleep(5)
+                    shooting(objt,x,y,torre)
+                    
+                elif objt==b:
 
-                misl=LoadImg('rock.png')
-                G_root.rocvok=misl
-                mis=G_root.create_image(x+25, y+30, anchor=NW,image=misl, tags='misil')
-                move_misil(mis,4,torre)
-                time.sleep(5)
-                shooting(objt,x,y,torre)
-                
-            elif objt==c:
+                    misl=LoadImg('rock.png')
+                    G_root.rocvok=misl
+                    mis=G_root.create_image(x+25, y+30, anchor=NW,image=misl, tags='misil')
+                    move_misil(mis,4,torre)
+                    time.sleep(5)
+                    shooting(objt,x,y,torre)
+                    
+                elif objt==c:
 
-                misl=LoadImg('fire.png')
-                G_root.fiah=misl
-                mis=G_root.create_image(x+25, y+30, anchor=NW, image=misl, tags='misil')
-                move_misil(mis,8,torre)
-                time.sleep(5)
-                shooting(objt,x,y,torre)
-                
-            elif objt==d:
+                    misl=LoadImg('fire.png')
+                    G_root.fiah=misl
+                    mis=G_root.create_image(x+25, y+30, anchor=NW, image=misl, tags='misil')
+                    move_misil(mis,8,torre)
+                    time.sleep(5)
+                    shooting(objt,x,y,torre)
+                    
+                elif objt==d:
 
-                misl=LoadImg('water.png')
-                G_root.wteer=misl
-                mis=G_root.create_image(x+25, y+30, anchor=NW, image=misl, tags='misil')
-                move_misil(mis,8,torre)
-                time.sleep(5)
+                    misl=LoadImg('water.png')
+                    G_root.wteer=misl
+                    mis=G_root.create_image(x+25, y+30, anchor=NW, image=misl, tags='misil')
+                    move_misil(mis,8,torre)
+                    time.sleep(5)
+                    shooting(objt,x,y,torre)
+                    
+            else:
+                time.sleep(3)
                 shooting(objt,x,y,torre)
-                
-        else:
-            time.sleep(3)
-            shooting(objt,x,y,torre)
 
 
         
 
-    def tower_thread(x,y, objt,torre):
+    def tower_thread(x,y, objt,torre): #objt es el str de la torre, torre es el id
         crte=Thread(target=shooting, args=(objt,x, y,torre))
         crte.start()
 
@@ -643,7 +1155,7 @@ def INICIO():
             pos_x=L[i][1]
             pos_y=L[i][2]
             tw=G_root.create_image(pos_x, pos_y, anchor=NW, image=it, tag='tower')
-            tower=[item,pos_x,pos_y]
+            tower=[tw,item,pos_x,pos_y]
             hpss=[tw,hp]
             lisVidas.append(hpss)
             maTRooks.append(tower)
@@ -657,8 +1169,6 @@ def INICIO():
         pas_aux(nuevos,0,len(nuevos))
         
     def pas_aux(L,j,m):
-        
-        print('colocando avatars')
         if j==m:
             print('done')
         else:
@@ -677,7 +1187,6 @@ def INICIO():
                 y=L[j][2]
                 Enemy=G_root.create_image(x, y, anchor=NW, image=arq, tags='enemy')
                 hp=5
-                print('item= ',item, ' x= ',x,' y= ',y)
                 Bakemono=[Enemy,hp]
                 VidsEn.append(Bakemono)
                 bakemono=[Enemy,a,x,y]
@@ -693,7 +1202,6 @@ def INICIO():
                 y=L[j][2]
                 Enemy=G_root.create_image(x, y, anchor=NW, image=can, tags='enemy')
                 hp=25
-                print('item= ',item, ' x= ',x,' y= ',y)
                 Bakemono=[Enemy,hp]
                 VidsEn.append(Bakemono)
                 bakemono=[Enemy,b,x,y]
@@ -709,7 +1217,6 @@ def INICIO():
                 y=L[j][2]
                 Enemy=G_root.create_image(x, y, anchor=NW, image=esq, tags='enemy')
                 hp=10
-                print('item= ',item, ' x= ',x,' y= ',y)
                 Bakemono=[Enemy,hp]
                 VidsEn.append(Bakemono)
                 bakemono=[Enemy,c,x,y]
@@ -726,7 +1233,6 @@ def INICIO():
                 y=L[j][2]
                 Enemy=G_root.create_image(x, y, anchor=NW, image=lena, tags='enemy')
                 hp=20
-                print('item= ',item, ' x= ',x,' y= ',y)
                 Bakemono=[Enemy,hp]
                 VidsEn.append(Bakemono)
                 bakemono=[Enemy,d,x,y]
@@ -747,7 +1253,6 @@ def INICIO():
 
     def create_matEn(L,status):
         global nuevos
-        print('la lista convirtiendose en matriz= ',L)
         if L==[] or status=='Error':
             staticE(status)#funcion que empieza el thread para crear los enemigos
         else:
@@ -818,12 +1323,12 @@ def INICIO():
             create_mat([])
 
         else:
-            item=lista[0]
-            pos_x=int(lista[1])
-            pos_y=int(lista[2])
+            item=lista[1]
+            pos_x=int(lista[2])
+            pos_y=int(lista[3])
             lisT=[item,pos_x,pos_y] #crea una lista con los items del rook
             lisPast.append(lisT) #se le agrega a la lista de rooks pasados la sublista con la informacion de cada rook
-            create_mat(lista[3:]) #se cortan 3 elementos de la lista
+            create_mat(lista[4:]) #se cortan 3 elementos de la lista
             
 
     #se encarga de convertir el readlines en una lista legible a como se quiere
@@ -841,34 +1346,110 @@ def INICIO():
 
     global merman
 
-    #si hay un 0 al inicio del documento es que no hay partida guardada
+    #si hay un 0 al inicio del documento es que no hay partida guardada_______________________________
     if merman[0]=='0':
         print('0')
        
     elif merman[0]=='1' and merman[1]==name: #si hay un uno, entonces si hay partida guardada y se procede a leer si el nombre guardado coincide con el nombre ingresado
         
         extract(merman) #se llama a la funcion que extraera los datos de la lista
+    def destroy_allR(j,m):
+        global maTRooks
+        if j==m:
+            global lisVidas
+            lisVidas=[] 
+            return 0
+        else:
+            rook=maTRooks[j][0]
+            G_root.delete(rook)
+            return destroy_allR(j+1,m)
 
+    def destroy_allE(j,m):
+        global enemigos
+        if j==m:
+            global VidsEn
+            VidsEn=[]
+            return 0
+        else:
+            ene=enemigos[j][0]
+            G_root.delete(ene)
+            return destroy_allE(j+1,m)
+        
 
+    def win():
+        global user
+        global seconds
+        global minute
+        global hour
+        global name
+        global maTRooks
+        global enemigos
+        
+        s=str(seconds)
+        h=str(hour)
+        m=str(minute)
+        destroy_allR(0,len(maTRooks))
+        destroy_allE(0,len(enemigos))
+        anima_win()
 
+        p=open(user+'/Desktop/proyecto_taller_1/puntajes.txt','a')
+        p.write(name+','+h+','+m+','+s+',')
+        p.close()
+        f=open(user+'/Desktop/proyecto_taller_1/SAVEGAME.txt', 'w')
+        f.write('0')
+        f.close()
+        g_root.destroy()
+        root.deiconify()
+        mixer.music.load(user+'/Desktop/proyecto_taller_1/music/lobby.mp3')
+        mixer.music.play(loops=-1)
+        
+        
     
         
 #Funcion para crear enemigos___________________________________________________________________________________
     def enemy():
+        global maTRooks
+        global enemigos
         global points
-        velo=25000
+        velo=15000 
         if points>=10 and points<=19: #estos if definen la velocidad de aparacion enemiga dependiendo del nivel
-            velo=int(velo-(velo*0.30))
-            muu=Thread(target=crte, args=())
-            muu.start()
-            G_root.after(velo,enemy)
-        elif points>=20 and points<=29:
-            velo=int(velo-(velo*0.60))
-            muu=Thread(target=crte, args=())
-            muu.start()
-            G_root.after(velo,enemy)
+            if points==10:
+                
+                destroy_allR(0,len(maTRooks))
+                destroy_allE(0,len(enemigos))
+                L=Label(G_root, text='NIVEL 2, adquiera 20 puntos para nivel 3', font=('Arial',14))
+                L.place(x=100, y=500)
+                time.sleep(3)
+                L.destroy()
+                velo=int(velo-(velo*0.30))
+                muu=Thread(target=crte, args=())
+                muu.start()
+                G_root.after(velo,enemy)
+            else:    
+                velo=int(velo-(velo*0.30))
+                muu=Thread(target=crte, args=())
+                muu.start()
+                G_root.after(velo,enemy)
+                
+        elif points>=20 and points<=59:
+            if points==20:
+                destroy_allR(0,len(maTRooks))
+                destroy_allE(0,len(enemigos))
+                L=Label(G_root, text='NIVEL 3, adquiera 60 puntos para ganar', font=('Arial',14))
+                L.place(x=100, y=500)
+                time.sleep(3)
+                L.destroy()
+                velo=int(velo-(velo*0.60))
+                muu=Thread(target=crte, args=())
+                muu.start()
+                G_root.after(velo,enemy)
+            else:
+                velo=int(velo-(velo*0.60))
+                muu=Thread(target=crte, args=())
+                muu.start()
+                G_root.after(velo,enemy)
         elif points>=60:
-            print('win')
+            win()
         else:
             muu=Thread(target=crte, args=())
             muu.start()
@@ -893,7 +1474,6 @@ def INICIO():
             y=780
             bakemono=[Enemy,an,x,y]
             enemigos.append(bakemono)
-            print('enemigos apenas se pone= ',enemigos)
             movementArquero(Enemy, 12,2)
 
         elif ren==2:
@@ -908,7 +1488,6 @@ def INICIO():
             y=780
             bakemono=[Enemy,an,x,y]
             enemigos.append(bakemono)
-            print('enemigos apenas se pone= ',enemigos)
             movementCanibal(Enemy, 14,12)
 
         elif ren==3:
@@ -923,7 +1502,6 @@ def INICIO():
             y=780
             bakemono=[Enemy,an,x,y]
             enemigos.append(bakemono)
-            print('enemigos apenas se pone= ',enemigos)
             movementEscuas(Enemy, 10, 3)
 
 
@@ -945,21 +1523,26 @@ def INICIO():
 ##Funcion para terminar el juego al perder y se borran los datos de guardado________________________________________________________
 
     def loose():
+        global enemigos
+        global maTRooks
         f=open(user+'/Desktop/proyecto_taller_1/SAVEGAME.txt', 'w')
         f.write('0')
         f.close
+        destroy_allR(0,len(maTRooks))
+        destroy_allE(0,len(enemigos))
         mixer.music.set_volume(0.2)
         mixer.music.stop()
         mixer.music.unload()
         g_root.destroy()
         root.deiconify()
+        anima_loose()
         mixer.music.load(user+'/Desktop/proyecto_taller_1/music/lobby.mp3')
         mixer.music.play(loops=-1)
 
 
 
 #Funcion para determinar si el avatar que lanza la flecha sigue vivo_________________________________________________________________________________
-    def alive(en,V,i,n):
+    def alive(en,V,i,n): #verifica si el avatar aun vive
         if i==n:
             return False
         elif V[i][0]==en:
@@ -968,10 +1551,10 @@ def INICIO():
             return alive(en,V,i+1,n)
 
 
-    def update(obj,N,E,j,m):
+    def update(obj,N,E,j,m): #actualiza la lista de enemigos
         global enemigos
         enemigos=[]
-        up_aux(obj,N,E,j,m)
+        up_aux(obj,N,E,j,m) 
         
 
 
@@ -1002,36 +1585,39 @@ def INICIO():
             ov=list(ov)
             rooks=G_root.find_withtag('tower')
             rooks=list(rooks)
-            if len(ov)>=2:
-                if comp(ov,rooks,0,0,len(rooks),len(ov))==True:
-                    objecT=objects(ov,rooks,0,0,len(rooks),len(ov),0)
-                    het=LoadImg('lena_hit.png')
-                    G_root.huisi=het
-                    hitt=G_root.create_image(x,y,anchor=NW,image=het,tags='hittingL')
-                    time.sleep(1)
-                    G_root.delete('hittingL')
-                    hp_reduction(dmg,objecT,'tower')
-                    time.sleep(5)
-                    movementLena(en,t,dmg)
-            else:    
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                en_coords=G_root.coords(en)
-                x=en_coords[0]
-                y=en_coords[1]
-                time.sleep(t)
-                new=[x,y]
-                update(en, new,enemigos,0,len(enemigos))
-                movementLena(en, t,dmg)
+            if y>=150:
+                if len(ov)>=2:
+                    if comp(ov,rooks,0,0,len(rooks),len(ov))==True:
+                        objecT=objects(ov,rooks,0,0,len(rooks),len(ov),0)
+                        het=LoadImg('lena_hit.png')
+                        G_root.huisi=het
+                        hitt=G_root.create_image(x,y,anchor=NW,image=het,tags='hittingL')
+                        time.sleep(1)
+                        G_root.delete('hittingL')
+                        hp_reduction(dmg,objecT,'tower')
+                        time.sleep(5)
+                        movementLena(en,t,dmg)
+                else:    
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    en_coords=G_root.coords(en)
+                    x=en_coords[0]
+                    y=en_coords[1]
+                    time.sleep(t)
+                    new=[x,y]
+                    update(en, new,enemigos,0,len(enemigos))
+                    movementLena(en, t,dmg)
+            else:
+                loose()
                 
 
 #Funcion que mueve la flecha del arquero______________________________________________________________________________
@@ -1093,7 +1679,7 @@ def INICIO():
             ov=list(ov)
             rooks=G_root.find_withtag('tower')
             rooks=list(rooks)
-            if y>=100:
+            if y>=150:
                 if len(ov)>=2:
                     if comp(ov,rooks,0,0,len(rooks),len(ov))==True:
                         alta=Thread(target=crear_arrow,args=(x+15,y+10,dmg,en))
@@ -1163,36 +1749,39 @@ def INICIO():
             ov=list(ov)
             rooks=G_root.find_withtag('tower')
             rooks=list(rooks)
-            if len(ov)>=2:
-                if comp(ov,rooks,0,0,len(rooks),len(ov))==True:
-                    objecT=objects(ov,rooks,0,0,len(rooks),len(ov),0)
-                    het=LoadImg('escuas_hit.png')
-                    G_root.huisi=het
-                    hitt=G_root.create_image(x,y,anchor=NW,image=het,tags='hittingE')
-                    G_root.delete('hittingE')
-                    hp_reduction(dmg,objecT,'tower')
-                    time.sleep(15)
-                    movementEscuas(en,t,dmg)
-            else:    
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                en_coords=G_root.coords(en)
-                x=en_coords[0]
-                y=en_coords[1]
-                time.sleep(t)
-                new=[x,y]
-                update(en, new,enemigos,0,len(enemigos))
-                time.sleep(t)
-                movementEscuas(en, t,dmg)
+            if y>=150:
+                if len(ov)>=2:
+                    if comp(ov,rooks,0,0,len(rooks),len(ov))==True:
+                        objecT=objects(ov,rooks,0,0,len(rooks),len(ov),0)
+                        het=LoadImg('escuas_hit.png')
+                        G_root.huisi=het
+                        hitt=G_root.create_image(x,y,anchor=NW,image=het,tags='hittingE')
+                        G_root.delete('hittingE')
+                        hp_reduction(dmg,objecT,'tower')
+                        time.sleep(15)
+                        movementEscuas(en,t,dmg)
+                else:    
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    en_coords=G_root.coords(en)
+                    x=en_coords[0]
+                    y=en_coords[1]
+                    time.sleep(t)
+                    new=[x,y]
+                    update(en, new,enemigos,0,len(enemigos))
+                    time.sleep(t)
+                    movementEscuas(en, t,dmg)
+            else:
+                loose()
         
 
 
@@ -1207,42 +1796,48 @@ def INICIO():
             ov=list(ov)
             rooks=G_root.find_withtag('tower')
             rooks=list(rooks)
-            if len(ov)>=2:
-                if comp(ov,rooks,0,0,len(rooks),len(ov))==True:
-                    objecT=objects(ov,rooks,0,0,len(rooks),len(ov),0)
-                    hit=LoadImg('canibal_hit.png')
-                    G_root.huisi=hit
-                    hitt=G_root.create_image(x,y,anchor=NW,image=hit,tags='hittingC')
-                    G_root.delete('hittingC')
-                    hp_reduction(dmg,objecT,'tower')
-                    time.sleep(3)
-                    movementCanibal(en,t,dmg)
-            
-            else:    
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                time.sleep(0.1)
-                G_root.move(en, 0, -10)
-                en_coords=G_root.coords(en)
-                x=en_coords[0]
-                y=en_coords[1]
-                time.sleep(t)
-                new=[x,y]
-                update(en, new,enemigos,0,len(enemigos))
-                time.sleep(t)
-                movementCanibal(en, t,dmg)
-
-    enemy()
+            if y>=150:
+                if len(ov)>=2:
+                    if comp(ov,rooks,0,0,len(rooks),len(ov))==True:
+                        objecT=objects(ov,rooks,0,0,len(rooks),len(ov),0)
+                        hit=LoadImg('canibal_hit.png')
+                        G_root.huisi=hit
+                        hitt=G_root.create_image(x,y,anchor=NW,image=hit,tags='hittingC')
+                        G_root.delete('hittingC')
+                        hp_reduction(dmg,objecT,'tower')
+                        time.sleep(3)
+                        movementCanibal(en,t,dmg)
+                
+                else:    
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    time.sleep(0.1)
+                    G_root.move(en, 0, -10)
+                    en_coords=G_root.coords(en)
+                    x=en_coords[0]
+                    y=en_coords[1]
+                    time.sleep(t)
+                    new=[x,y]
+                    update(en, new,enemigos,0,len(enemigos))
+                    time.sleep(t)
+                    movementCanibal(en, t,dmg)
+                    
+            else:
+                loose()
+    Enemigo=Thread(target=enemy,args=())
+    Enemigo.start()
+    #enemy()
 
 ###Bindings
     g_root.bind("<Button-1>", select)
+    g_root.bind("<Button-3>", select_izq)
 
 
 
@@ -1252,7 +1847,7 @@ def INICIO():
     def stringear_En(M,i,j,m,n):
         global stringEnes
         if j==m:
-            print('string total enemigos= ',stringEnes)
+            return 0
         elif i==n:
             return stringear_En(M,0,j+1,m,n)
         else:
@@ -1267,7 +1862,7 @@ def INICIO():
     def stringear(M,i,j,m,n):
         global stringRooks
         if j==m:
-            print('string total rooks= ',stringRooks)
+            return 0
         elif i==n:
             return stringear(M,0,j+1,m,n)
         else:
@@ -1286,18 +1881,19 @@ def INICIO():
         global maTRooks #la lista con los rooks y sus coordenadas y vida
         global points
         global enemigos
-        global stringRooks
+        global stringRooks#los rooks en string
         global stringEnes
         global seconds
         global minute
         global hour
+        print('rooks= ',maTRooks)
+        print('enemigos= ',enemigos)
         points=str(points)
         s=str(seconds)
         h=str(hour)
         m=str(minute)
-        if len(maTRooks)>0 and len(maTRooks[0])==3:
+        if len(maTRooks)>0 and len(maTRooks[0])==4:
             if len(enemigos)>0:
-                print('mandando enemigos a string= ',enemigos)
                 stringear_En(enemigos,0,0,len(enemigos),len(enemigos[0]))
                 stringear(maTRooks,0,0,len(maTRooks),len(maTRooks[0])) #convierte en string todos los valores de la matriz
                 enes=stringEnes
@@ -1312,6 +1908,8 @@ def INICIO():
                 f.write('1'+','+name+','+money+','+s+','+m+','+h+','+points+rooks+enes) #agrega un 1 que va a indicar luego si hay o no una partida guardada
                                                        
                 f.close()
+                destroy_allR(0,len(maTRooks))
+                destroy_allE(0,len(enemigos))
                 g_root.destroy()
                 root.deiconify()
                 mixer.music.load(user+'/Desktop/proyecto_taller_1/music/lobby.mp3')
@@ -1328,6 +1926,8 @@ def INICIO():
                 f.write('1'+','+name+','+money+','+s+','+m+','+h+','+points+rooks) #agrega un 1 que va a indicar luego si hay o no una partida guardada
                                                        
                 f.close()
+                destroy_allR(0,len(maTRooks))
+                destroy_allE(0,len(enemigos))
                 g_root.destroy()
                 root.deiconify()
                 mixer.music.load(user+'/Desktop/proyecto_taller_1/music/lobby.mp3')
@@ -1344,7 +1944,9 @@ def INICIO():
                 money=str(coins)    #para el int en un string
                 f=open(user+'/Desktop/proyecto_taller_1/SAVEGAME.txt', 'w') #abre el documento para reescribirlo
                 f.write('1'+','+name+','+money+','+s+','+m+','+h+','+points+enes) #agrega un 10 que me va a indicar luego si hay o no una partida guardada, cuando solucione el problema de hacerlo lista ese
-                f.close
+                f.close()
+                destroy_allR(0,len(maTRooks))
+                destroy_allE(0,len(enemigos))
                 g_root.destroy()
                 root.deiconify()
                 mixer.music.load(user+'/Desktop/proyecto_taller_1/music/lobby.mp3')
@@ -1357,11 +1959,17 @@ def INICIO():
                 money=str(coins)    #para el int en un string
                 f=open(user+'/Desktop/proyecto_taller_1/SAVEGAME.txt', 'w') #abre el documento para reescribirlo
                 f.write('1'+','+name+','+money+','+s+','+m+','+h+','+points) #agrega un 10 que me va a indicar luego si hay o no una partida guardada, cuando solucione el problema de hacerlo lista ese
-                f.close
+                f.close()
+
+                destroy_allR(0,len(maTRooks))
+                destroy_allE(0,len(enemigos))
+
+                
                 g_root.destroy()
                 root.deiconify()
                 mixer.music.load(user+'/Desktop/proyecto_taller_1/music/lobby.mp3')
                 mixer.music.play(loops=-1)
+                
             
 
 ###Botones del juego
@@ -1382,7 +1990,7 @@ def Exit():
 def reset():
     f=open(user+'/Desktop/proyecto_taller_1/SAVEGAME.txt', 'w')
     f.write('0')
-    f.close
+    f.close()
     
 #Button
 rests=LoadImg('restart.png')
@@ -1391,9 +1999,16 @@ C_root.botn=rests
 RESET=Button(C_root, command=reset, image=rests)
 RESET.place(x=850, y=570)
 
+about=Button(C_root, command=ventana_about,bg='light blue',fg='black',text='Creditos')
+about.place(x=30, y=150)
+
 
 EXIT=Button(C_root, command=Exit, bg='white', fg='black', text='Exit')
 EXIT.place(x=30, y=20)
+
+
+Punts=Button(C_root, command=v_puntajes, bg='yellow',fg='black',text='puntaje')
+Punts.place(x=30, y=250)
 
 
 starto=LoadImg('START.png')
