@@ -1,1 +1,1 @@
-1,123,50,18,0,0,0,20,water_rook.png,664,156,23,water_rook.png,569,156,21,escudero.png,664,720,22,escudero.png,189,780
+0

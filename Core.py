@@ -56,6 +56,20 @@ mixer.init()
 mixer.music.set_volume(0.2)
 mixer.music.load(user+'/Desktop/proyecto_taller_1/music/lobby.mp3')
 mixer.music.play(loops=-1)
+global oll
+oll=False
+
+def off():
+    global oll
+    if oll==False:
+        mixer.music.pause()
+        oll=True
+
+def on():
+    global oll
+    if oll==True:
+        oll=False
+        mixer.music.unpause()
 
 def anima_win():
     W_root=Toplevel() 
@@ -96,7 +110,7 @@ def v_puntajes():
     global ordenados
     ordenados=[]
     P_root=Toplevel() 
-    P_root.title('DERROTA') 
+    P_root.title('Puntajes') 
     P_root.minsize(650, 500)
     P_root.resizable(width=NO, height=NO)
 
@@ -109,49 +123,48 @@ def v_puntajes():
 
 
     def etadpu(M,res):
-        print('Namae update= ',M, 'RES= ',res)
-        restyo(M,[],0,len(M),res)
+        return restyo(M,[],0,len(M),res)
 
     def restyo(N,new,i,n,res):
-        
         return etadpu_aux(N,[],0,len(N),res)
 
     def etadpu_aux(N,new,i,n,res):
         global namae
         if i==n:
-            print('El namae final= ',namae)
-            print('La i F= ',i,'la n F= ',n)
+
             return 0
-        elif N[i][3]==res[3] and N[i][0]==res[0] and N[i][1] == res[1] and N[i][2]==res[2]:
-            print('N es= ',N,' res es= ',res)
+        elif N[i][3]==res[3] and N[i][0]==res[0] and N[i][1] == res[1] and N[i][2]==res[2]: #si el nombre es igual al del resultado, y los minutos, horas y segundos concuerdan
+
             global ordenados
-            ordenados.append(res)
+            ordenados.append(N[i]) #se le agrega
             return etadpu_aux(N,new,i+1,n,res)
         
-        elif N[i][3]!=res[3] and N[i][0]!=res[0] and N[i][1] != res[1] and N[i][2]!=res[2]:
-            print('i es= ',i)
+        elif N[i][3]!=res[3] or( N[i][0]!=res[0] and N[i][1] != res[1] and N[i][2]!=res[2]):
+
             lista=N[i]
             namae.append(lista)
-            print('Nuevo namae= ',new)
+
             return etadpu_aux(N,new,i+1,n,res)
             
             
-
+    def prep(M,i,m,res):
+        global namae
+        return comparsaH(namae,i,len(namae),res)
 
 
     def comparsaS(M,i,n,res):
         global namae
-        
-        if i==n:
+        global ordenados
+        if len(M)==1:
+            ordenados.append(M[0])
+            print('Final= ', ordenados)
+
+        elif i==n: #si el contador es igual a n
+            namae=[]
             etadpu(M,res)
-            if namae==[]:
-                global ordenados
-                print('Final= ', ordenados)
-            else:
-                return comparsaH(namae,0,len(namae),[0,0])
+            return prep(M,0,len(M),[0,0])
         elif M[i][2]>=res[2] and M[i][0]>=res[0] and M[i][1]<res[1]:
             return comparsaS(M,i+1,n,res)
-            
 
         elif (M[i][2]<res[2] and M[i][0]<res[0] and M[i][1]<res[1] )or(M[i][2]<res[2] and M[i][0]<res[0] and M[i][1]>=res[1]):
             return comparsaS(M,i+1,n,M[i])
@@ -160,47 +173,48 @@ def v_puntajes():
             
 
     def comparsaM(M,i,n,res): #M es [hora,minutos, segundos,nombre]
+        if M==[]:
+            return comparsaS(M,0,n,[0,0,0])
         if i==n:
             comparsaS(M,0,n,res)
-        elif M[i][1]>=res[1] and M[i][1]:
-            return comparsaM(M,i+1,n,res)
-        elif M[i][1]<res[1] and M[i][0]<res[0]:
-            return comparsaM(M,i+1,n,M[i])
+        elif M[i][1]>=res[1] and M[i][0]>=res[0]: #si los minutos son mayores al los minutos resultantes pero las horas son iguales o mayores
+            return comparsaM(M,i+1,n,res) #no se guarda
+        elif M[i][1]<res[1] and M[i][0]<=res[0]: #si es menor los minutos en la matriz y las horas son menores o iguales al resultado
+            return comparsaM(M,i+1,n,M[i]) #se guarda
         else:
-            return comparsaM(M,i+1,n,res)
+            return comparsaM(M,i+1,n,res) #de otra forma, se ignora
     
     def comparsaH(M,i,n,res):
-        if i==n:
+        if M==[]:
+            return comparsaM(M,0,n,res)
+        elif i==n: #si el indice es igual a la longitud de la matriz, finaliza
             comparsaM(M,0,n,res)
-        elif M[i][0]==0:
-            return comparsaH(M,n,n,M[i])
-        elif M[i][0]>=res[0]:
+        elif M[i][0]==0: #si es 0 las horas, no hay otro menor por lo cual se coloca la lista i en el resultado
+            return comparsaH(M,n,n,M[i]) 
+        elif M[i][0]>=res[0]: #si las horas son mayores a las guardadas no sirve
             return comparsaH(M,i+1,n,res)
-        elif M[i][0]<res[0]:
-            return comparsaH(M,i+1,n,M[i])
+        elif M[i][0]<res[0]: #si las horas son menores que el resultado entonces se guarda
+            return comparsaH(M,i+1,n,M[i]) #se actualiza el resultado
 
         
-    def pre_comparsaH(M,i,n,res):
-        global namae
-        namae=[]
-        print('LA M: ',M)
-        return comparsaH(M,0,len(M),[0,0])
+    def pre_comparsaH(M,i,n,res): #guarda la matriz y el resultado
+        return comparsaH(M,i,len(M),[0,0]) #despues de resetear la matriz se manda a evaluar
             
     
     def extraer(L,i,n):
         global namae
-        if L[i]=='':
+        if L[i]=='': #si en 0 el ultimo elemento es '', por lo tanto se llegó al final de la lista
             
-            return pre_comparsaH(namae,0,len(namae),[0,0])
+            return pre_comparsaH(namae,0,len(namae),[0,0]) #se envía la matriz con un contador i y su n con un resultado 0
         else:
             
-            nombre=L[i]
-            hora=int(L[i+1])
-            minu=int(L[i+2])
-            sec=int(L[i+3])
-            lista=[hora,minu,sec,nombre]
-            namae.append(lista)
-            return extraer(L[4:],i,n)
+            nombre=L[i]  #el elemento 0 es el nombre del jugador
+            hora=int(L[i+1])  # el 1 es la hora
+            minu=int(L[i+2])  #el 2 es el minuto
+            sec=int(L[i+3])    #el 3 es los segundos
+            lista=[hora,minu,sec,nombre] #se crea una lista con estos elementos
+            namae.append(lista) #se agrega la lista a una lista que contiene listas de cada uno de los puntajes
+            return extraer(L[4:],i,n) #se repite eliminando los primeros 4 elementos de la lista
             
         
         
@@ -220,6 +234,117 @@ def v_puntajes():
 
     if len(lalala)>0:
         extraer(lalala,0, len(lalala))
+        if len(ordenados)>0:
+            p_root.create_text(300,100,font=('Arial',12),fill='black',text='Top Tiempos: ')
+            if len(ordenados)==1:
+                nombre1=ordenados[0][3]
+                H1=ordenados[0][0]
+                M1=ordenados[0][1]
+                S1=ordenados[0][2]
+                texto=nombre1+'='+str(H1)+':'+str(M1)+':'+str(S1)+'\n'
+
+                p_root.create_text(300, 200, font=('Arial', 20), fill='black', text=texto)
+
+
+
+            elif len(ordenados)==2:
+                nombre1=ordenados[0][3]
+                N2=ordenados[1][3]
+                H1=ordenados[0][0]
+                H2=ordenados[1][0]
+                M1=ordenados[0][1]
+                M2=ordenados[1][1]
+                S1=ordenados[0][2]
+                S2=ordenados[0][2]
+                texto=nombre1+'='+str(H1)+';'+str(M1)+':'+str(S1)+'\n'+N2+'='+str(H2)+';'+str(M2)+':'+str(S2)+'\n'
+
+                
+                p_root.create_text(300, 200, font=('Arial', 20), fill='black', text=texto)
+
+
+
+            elif len(ordenados)==3:
+                nombre1=ordenados[0][3]
+                N2=ordenados[1][3]
+                N3=ordenados[2][3]
+                H1=ordenados[0][0]
+                H2=ordenados[1][0]
+                H3=ordenados[2][0]
+                M1=ordenados[0][1]
+                M2=ordenados[1][1]
+                M3=ordenados[2][1]
+                S1=ordenados[0][2]
+                S2=ordenados[0][2]
+                S3=ordenados[0][2]
+
+
+
+                texto=nombre1+'='+str(H1)+';'+str(M1)+':'+str(S1)+'\n'+N2+'='+str(H2)+':'+str(M2)+':'+str(S2)+'\n'+N3+'='+str(H3)+':'+str(M3)+':'+str(S3)+'\n'
+
+                p_root.create_text(300, 200, font=('Arial', 20), fill='black', text=texto)
+                
+
+
+
+
+
+            elif len(ordenados)==4:
+                nombre1=ordenados[0][3]
+                N2=ordenados[1][3]
+                N3=ordenados[2][3]
+                N4=ordenados[3][3]
+                H1=ordenados[0][0]
+                H2=ordenados[1][0]
+                H3=ordenados[2][0]
+                H4=ordenados[3][0]
+                M1=ordenados[0][1]
+                M2=ordenados[1][1]
+                M3=ordenados[2][1]
+                M4=ordenados[3][1]
+                S1=ordenados[0][2]
+                S2=ordenados[0][2]
+                S3=ordenados[0][2]
+                S4=ordenados[0][2]
+
+                texto=nombre1+'='+str(H1)+';'+str(M1)+':'+str(S1)+'\n'+N2+'='+str(H2)+':'+str(M2)+':'+str(S2)+'\n'+N3+'='+str(H3)+':'+str(M3)+':'+str(S3)+'\n'+N4+'='+str(H4)+':'+str(M4)+':'+str(S4)+'\n'
+
+                p_root.create_text(300, 200, font=('Arial', 20), fill='black', text=texto)
+
+
+
+
+
+            elif len(ordenados)>=5:
+                nombre1=ordenados[0][3]
+                N2=ordenados[1][3]
+                N3=ordenados[2][3]
+                N4=ordenados[3][3]
+                N5=ordenados[4][3]
+                
+                H1=ordenados[0][0]
+                H2=ordenados[1][0]
+                H3=ordenados[2][0]
+                H4=ordenados[3][0]
+                H5=ordenados[4][0]
+                
+                M1=ordenados[0][1]
+                M2=ordenados[1][1]
+                M3=ordenados[2][1]
+                M4=ordenados[3][1]
+                M5=ordenados[4][1]
+                
+                S1=ordenados[0][2]
+                S2=ordenados[0][2]
+                S3=ordenados[0][2]
+                S4=ordenados[0][2]
+                S5=ordenados[0][2]
+
+                texto=nombre1+'='+str(H1)+';'+str(M1)+':'+str(S1)+'\n'+N2+'='+str(H2)+':'+str(M2)+':'+str(S2)+'\n'+N3+'='+str(H3)+':'+str(M3)+':'+str(S3)+'\n'+N4+'='+str(H4)+':'+str(M4)+':'+str(S4)+'\n'+N5+'='+str(H5)+':'+str(M5)+':'+str(S5)+'\n'
+
+                p_root.create_text(300, 200, font=('Arial', 20), fill='black', text=texto)
+
+        
+        print(ordenados)
 
 
 
@@ -373,7 +498,7 @@ def INICIO():
     G_root.create_text(1100,380,font=('Arial', 12), fill='black', text='Points:')  #crea el texto que va mostrar los puntos
     G_root.create_text(1130,380,font=('Arial', 12), fill='black', text=points, tags='text')  #crea el texto con los puntos
     G_root.create_text(1100,430,font=('Arial', 12), fill='black', text='Coins:') #crea un texto para mostrar las monedas
-    G_root.create_text(1132,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext') #mostrara la cantidad de monedas del jugador
+    G_root.create_text(1140,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext') #mostrara la cantidad de monedas del jugador
 
     hours=str(hour)+':'
     minutes=str(minute)+':'
@@ -565,17 +690,17 @@ def INICIO():
                 if item=='twenty.png':
                     coins+=25
                     G_root.delete('Ctext')
-                    G_root.create_text(1130,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')
+                    G_root.create_text(1140,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')
                     borrar_monedas(monedins,moneda)
                 elif item=='hundreth.png':
                     coins+=100
                     G_root.delete('Ctext')
-                    G_root.create_text(1130,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')
+                    G_root.create_text(1140,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')
                     borrar_monedas(monedins,moneda)
                 elif item=='fifty.png':
                     coins+=50
                     G_root.delete('Ctext')
-                    G_root.create_text(1130,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')
+                    G_root.create_text(1140,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')
                     borrar_monedas(monedins,moneda)
                     
                 
@@ -880,7 +1005,7 @@ def INICIO():
                 points+=1 #se suma un punto
                 G_root.delete('text') #se borra el texto con los puntos
                 G_root.delete('Ctext') #se borra el texto con la cantidad de monedas
-                G_root.create_text(1130,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')  #se crean de nuevo con los valores actualizados
+                G_root.create_text(1140,430,font=('Arial', 12), fill='black', text=coins, tags='Ctext')  #se crean de nuevo con los valores actualizados
                 G_root.create_text(1130,380,font=('Arial', 12), fill='black', text=str(points), tags='text')
                 return edit_en(NHP,item, M, i,j+1,m,E)
             else:
@@ -1417,8 +1542,7 @@ def INICIO():
                 
                 destroy_allR(0,len(maTRooks))
                 destroy_allE(0,len(enemigos))
-                L=Label(G_root, text='NIVEL 2, adquiera 20 puntos para nivel 3', font=('Arial',14))
-                L.place(x=100, y=500)
+                G_root.create_text(100,600,fill='black', text='NIVEL 2, adquiera 20 puntos para nivel 3', font=('Arial',14))
                 time.sleep(3)
                 L.destroy()
                 velo=int(velo-(velo*0.30))
@@ -1435,8 +1559,7 @@ def INICIO():
             if points==20:
                 destroy_allR(0,len(maTRooks))
                 destroy_allE(0,len(enemigos))
-                L=Label(G_root, text='NIVEL 3, adquiera 60 puntos para ganar', font=('Arial',14))
-                L.place(x=100, y=500)
+                G_root.create_text(100,600,fill='black', text='NIVEL 3, adquiera 60 puntos para ganar', font=('Arial',14))
                 time.sleep(3)
                 L.destroy()
                 velo=int(velo-(velo*0.60))
@@ -2001,10 +2124,37 @@ RESET.place(x=850, y=570)
 
 about=Button(C_root, command=ventana_about,bg='light blue',fg='black',text='Creditos')
 about.place(x=30, y=150)
-
+Ayuda="""
+    AYUDA:
+    Click izquierdo para seleccionar
+    y colocar un rook
+    Click derecho para borrar un
+    rook o recolectar una moneda
+    Se debera defender exitosamente
+    de 60 avatars para ganar
+    Si un avatar llega al final del
+    tablero, usted pierde
+    Use las monedas sabiamente"""
+C_root.create_text(150,400,font=('Arial', 12),fill='black',text=Ayuda)
 
 EXIT=Button(C_root, command=Exit, bg='white', fg='black', text='Exit')
 EXIT.place(x=30, y=20)
+def off():
+    global oll
+    if oll==False:
+        mixer.music.pause()
+        oll=True
+
+def on():
+    global oll
+    if oll==True:
+        oll=False
+        mixer.music.unpause()
+
+Mute=Button(C_root,command=off,bg='white',fg='black',text='Mute')
+Mute.place(x=950,y=50)
+UnMute=Button(C_root,command=on,bg='white',fg='black',text='Unmute')
+UnMute.place(x=950,y=100)
 
 
 Punts=Button(C_root, command=v_puntajes, bg='yellow',fg='black',text='puntaje')
